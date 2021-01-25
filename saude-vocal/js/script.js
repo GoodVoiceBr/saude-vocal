@@ -316,25 +316,19 @@ $(document).ready(function(){
     /* Gerenciando a matriz_horas */
 
     $('.horas_voz').change(function(){
-        var DADOS = JSON.parse(localStorage['DADOS']);
-
-        let id = $(this).attr('id').split('_');
-        DADOS['matriz_horas'][id[0]][id[1]] = $(this).val();
-
-        msgDadosPerfilSalvos();
-        atualiazarDados(DADOS);
+        carregaCoresTabela();
     });
 
     $("#idade").change(function(){
         let valor = this.value;
 
         if(valor > 0){
-            var DADOS = JSON.parse(localStorage['DADOS']);
+            // var DADOS = JSON.parse(localStorage['DADOS']);
 
-            DADOS['dados_pessoais']['idade'] = valor;
+            // DADOS['dados_pessoais']['idade'] = valor;
 
-            msgDadosPerfilSalvos();
-            atualiazarDados(DADOS);
+            // msgDadosPerfilSalvos();
+            // atualiazarDados(DADOS);
             $("#idade").removeClass("red-text");
             $("#idade").css('border-color', 'grey');
         }else{
@@ -344,27 +338,18 @@ $(document).ready(function(){
     });
 
 
-    $("input[name=sexo]:radio").change(function(){
-        let valor = this.value;
+    // $("input[name=sexo]:radio").change(function(){
+    //     let valor = this.value;
 
-        var DADOS = JSON.parse(localStorage['DADOS']);
+    //     var DADOS = JSON.parse(localStorage['DADOS']);
 
-        DADOS['dados_pessoais']['sexo'] = valor;
+    //     DADOS['dados_pessoais']['sexo'] = valor;
 
-        msgDadosPerfilSalvos();
-        atualiazarDados(DADOS);
-    });
+    //     msgDadosPerfilSalvos();
+    //     atualiazarDados(DADOS);
+    // });
 
     $("input[name=fumante]:radio").change(function(){
-        let valor = this.value;
-
-        var DADOS = JSON.parse(localStorage['DADOS']);
-
-        DADOS['dados_pessoais']['fumante'] = valor;
-
-        msgDadosPerfilSalvos();
-        atualiazarDados(DADOS);
-
         toggleInputsTempo();
 
     });
@@ -378,11 +363,11 @@ $(document).ready(function(){
             $("#tempo_meses").removeClass("red-text");
             $("#tempo_anos").css('border-color', 'gray');
             $("#tempo_meses").css('border-color', 'gray');
-            var DADOS = JSON.parse(localStorage['DADOS']);
-            DADOS['dados_pessoais']["tempo_fumante"] = [valorAno,valorMes];
+            // var DADOS = JSON.parse(localStorage['DADOS']);
+            // DADOS['dados_pessoais']["tempo_fumante"] = [valorAno,valorMes];
 
-            msgDadosPerfilSalvos();
-            atualiazarDados(DADOS);
+            // msgDadosPerfilSalvos();
+            // atualiazarDados(DADOS);
         }else if(valorAno < 0){
             $("#tempo_anos").addClass("red-text");
             $("#tempo_anos").css('border-color', 'rgb(255, 99, 132)');
@@ -402,11 +387,11 @@ $(document).ready(function(){
             $("#parou_meses").removeClass("red-text");
             $("#parou_meses").css('border-color', 'gray');
             $("#parou_anos").css('border-color', 'gray');
-            var DADOS = JSON.parse(localStorage['DADOS']);
-            DADOS['dados_pessoais']["tempo_parou_fumar"] = [valorAno,valorMes];
+            // var DADOS = JSON.parse(localStorage['DADOS']);
+            // DADOS['dados_pessoais']["tempo_parou_fumar"] = [valorAno,valorMes];
 
-            msgDadosPerfilSalvos();
-            atualiazarDados(DADOS);
+            // msgDadosPerfilSalvos();
+            // atualiazarDados(DADOS);
         }else if(valorAno < 0){
             $("#parou_anos").addClass("red-text");
             $("#parou_anos").css('border-color', 'rgb(255, 99, 132)');
@@ -417,7 +402,46 @@ $(document).ready(function(){
         }
     });
 
+// -------------------------------------------
+
     $('#salvar_dados_perfil').click(function(){
+
+        var DADOS = JSON.parse(localStorage['DADOS']);
+
+        let idade = $("#idade").val();
+
+        if(idade > 0){
+            DADOS['dados_pessoais']['idade'] = idade;
+        }
+
+        if (document.querySelector('input[name=sexo]:checked') != null) {
+            DADOS['dados_pessoais']['sexo'] = document.querySelector('input[name=sexo]:checked').value;
+        }
+        if (document.querySelector('input[name=fumante]:checked') != null) {
+            DADOS['dados_pessoais']['fumante'] = document.querySelector('input[name=fumante]:checked').value;
+        }
+
+        let valorAno = $("#tempo_anos").val();
+        let valorMes = $("#tempo_meses").val();
+
+        if (valorAno >= 0 && valorMes >=0 && valorMes < 12) {
+            DADOS['dados_pessoais']["tempo_fumante"] = [valorAno,valorMes];
+        }
+
+        valorAno = $("#parou_anos").val();
+        valorMes = $("#parou_meses").val();
+
+        if (valorAno >= 0 && valorMes >=0 && valorMes < 12){
+            DADOS['dados_pessoais']["tempo_parou_fumar"] = [valorAno,valorMes];
+        }
+
+        $('.horas_voz').each(function(e){
+            let id = this.id.split('_');
+            DADOS['matriz_horas'][id[0]][id[1]] = $(this).val();
+        })
+        
+        msgDadosPerfilSalvos();
+        atualiazarDados(DADOS);
         M.Tabs.getInstance($(".tabs")).select('tab1');
         window.scrollTo(0, 0);
     })

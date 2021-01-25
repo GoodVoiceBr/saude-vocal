@@ -417,6 +417,11 @@ $(document).ready(function(){
         }
     });
 
+    $('#salvar_dados_perfil').click(function(){
+        M.Tabs.getInstance($(".tabs")).select('tab1');
+        window.scrollTo(0, 0);
+    })
+
 
     $('.sidenav').sidenav();
 

@@ -380,3 +380,7 @@ h5 + p{
                                         rgba(75, 192, 192, 1) 100%);
   border-radius: 10px;
 }
+
+#salvar_dados_perfil{
+  margin: 3vh 0;
+}

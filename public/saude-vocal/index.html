@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Saúde Vocal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="img/favicon.ico">
+
+    <link rel="apple-touch-icon" href="img/icons/apple/apple-icon-180.png">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link href="img/icons/apple/apple-splash-2048-2732.jpg" sizes="2048x2732" rel="apple-touch-startup-image" />
+    <link href="img/icons/apple/apple-splash-1668-2224.jpg" sizes="1668x2224" rel="apple-touch-startup-image" />
+    <link href="img/icons/apple/apple-splash-1536-2048.jpg" sizes="1536x2048" rel="apple-touch-startup-image" />
+    <link href="img/icons/apple/apple-splash-1125-2436.jpg" sizes="1125x2436" rel="apple-touch-startup-image" />
+    <link href="img/icons/apple/apple-splash-1242-2208.jpg" sizes="1242x2208" rel="apple-touch-startup-image" />
+    <link href="img/icons/apple/apple-splash-750-1334.jpg" sizes="750x1334" rel="apple-touch-startup-image" />
+    <link href="img/icons/apple/apple-splash-640-1136.jpg" sizes="640x1136" rel="apple-touch-startup-image" />
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection">
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css?v=3">
+
+    <meta name="theme-color" content="#009688">
+</head>
+
+<body>
+    <div id="tela_cadastro" class="auth">
+        <div class="card grey lighten-3 center-align">
+            <div class="card-content black-text">
+                <span class="card-title">
+                    Cadastro
+                </span>
+
+                <div class="red-text" id="erro_cadastro"></div>
+
+                <div class="row">
+                    <input type="text" id="email_cadastro_input" placeholder="E-mail">
+                    <input type="password" id="senha_cadastro_input" placeholder="Senha">
+                    <input type="password" id="confirmar_senha_input" placeholder="Confirmar Senha">
+                </div>
+            </div>
+
+            <div class="card-content row">
+                <button class="btn waves-effect waves-light col s4" id="cancela_btn">Cancelar</button>
+                <div class=" col s8 valign-wrapper right">
+                    <button class="btn waves-effect waves-light col s10" id="cadastro_btn">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tela_login" class="auth">
+        <div class="card grey lighten-3 center-align">
+            <div class="card-content black-text">
+                <span class="card-title">
+                    Login
+                </span>
+
+                <div class="red-text" id="erro_login"></div>
+
+                <div class="row">
+                    <input type="text" id="email_input" placeholder="E-mail">
+                    <input type="password" id="senha_input" placeholder="Senha">
+                </div>
+
+                <a href="#" id="btn_reset_password" class="teal-text col s8">
+                    <span>Esqueceu a senha?</span>
+                </a>
+
+            </div>
+
+            <div class="card-content row">
+                <button class="btn waves-effect waves-light col s12" id="login_btn">Entrar</button>
+            </div>
+
+            <div class="card-action">
+                <a href="#" class="teal-text col s12" id="cadastre_btn">
+                    <span>Não é cadastrado?</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela avaliação voz -->
+    <div id="tela_avaliacao">
+        <div id="fechar_avaliacao">
+            <i class="material-icons">close</i> Fechar
+        </div>
+        <h5>
+            <strong>Avaliação Vocal</strong>
+        </h5>
+        <p>
+            Utilizaremos a técnica de <strong>Tempo Máximo de Fonação da vogal "a" (TMF /a/)</strong> para
+            <strong>estimar o padrão de normalidade da sua voz</strong>.
+        </p>
+        <p>
+            1) O teste TMF deve ser feito em pé com os membros relaxados olhando para a frente. Com o celular em mãos,
+            pelo menos um dos membros relaxados olhando para a frente.
+        </p>
+        <p>
+            2) Inspire o ar profundamente.
+        </p>
+        <p>
+            3) Emita o som da letra "a" dizendo "aaaaaaa" pelo maior tempo que conseguir naturalmente, sem perder o
+            fôlego.
+        </p>
+        <p>
+            4) Quando terminar, solte o botão.
+        </p>
+
+        <p>
+            5) Repita o processo 3 vezes.
+        </p>
+
+        <div class="row">
+            <div class="col s4">
+                <div class="loader" style="display: none"></div>
+            </div>
+            <div class="col s4">
+                <div id="btn_tmf">
+                    <i class="material-icons">record_voice_over</i>
+                </div>
+            </div>
+            <div class="col s4">
+                <div class="loader" style="display: none"></div>
+            </div>
+        </div>
+
+        <div id="resultado_voz" style="display: none">
+        </div>
+
+        <div class="botoes_avaliacao" style="display: none">
+            <button id="cancelar_avaliacao">
+                <i class="material-icons">close</i> Cancelar
+            </button>
+            <button id="salvar_avaliacao">
+                <i class="material-icons">check</i> Salvar e Fechar
+            </button>
+        </div>
+    </div>
+
+    <!-- Cabeçalho -->
+    <nav>
+        <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large hide-on-med-and-down"><i
+                class="material-icons">menu</i></a>
+        <div class="nav-wrapper teal">
+            <a href="#" class="brand-logo">
+                Saúde <strong>Vocal</strong>
+            </a>
+            <ul>
+                <li>
+                    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Menu lateral -->
+    <ul id="slide-out" class="sidenav">
+        <li id="logo_sidenav"><a href="#!">Saúde Vocal v.0.1</a></li>
+        <li>
+            <div class="divider"></div>
+        </li>
+        <li class="center" id="logout_wrapper">
+            <div><strong>Logado como: </strong><span id="email_user"></span></div>
+            <button class="btn waves-effect waves-light red lighten-1" id="logout_btn">Sair
+                <i class="material-icons right">logout</i>
+            </button>
+            <div class="red-text left" id="erro_logout">
+
+            </div>
+        </li>
+        <li>
+            <div class="divider"></div>
+        </li>
+        <!--<li>
+            <a href="#!" id="carregar_exemplo"><i class="material-icons">storage</i> Carregar dados de exemplo</a>
+        </li> -->
+        <li>
+            <a href="#!" id="limpar_dados"><i class="material-icons">delete</i> Limpar dados</a>
+        </li>
+    </ul>
+
+    <!-- Abas -->
+    <div class="col s12">
+        <ul class="tabs">
+            <li class="tab col s6">
+                <a class="active" href="#tab1" id="link_tab1">
+                    <i class="material-icons">record_voice_over</i>
+                    Voz
+                </a>
+            </li>
+            <li class="tab col s6">
+                <a href="#tab2" id="link_tab2">
+                    <i class="material-icons">multiline_chart</i>
+                    Evolução
+                </a>
+            </li>
+            <li class="tab col s6">
+                <a href="#tab3" id="link_tab3">
+                    <i class="material-icons">person</i>
+                    Perfil
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Conteúdo das abas -->
+    <div class="container">
+        <div id="tab1" class="col s12">
+            <div class="col s12 m12">
+                <div class="card grey lighten-3">
+                    <div class="card-content black-text">
+                        <span class="card-title">
+                            Como está sua voz hoje?
+                        </span>
+
+                        <div class="row" id="status_voz">
+                            <div class="col s6" id="btn_voz_alterada">
+                                <i class="material-icons">sentiment_very_dissatisfied</i>
+                                <p>Alterada</p>
+                            </div>
+
+                            <div class="col s6" id="btn_voz_boa">
+                                <i class="material-icons">sentiment_very_satisfied</i>
+                                <p>Normal</p>
+                            </div>
+                        </div>
+
+                        <div class="center">
+                            Período do dia avaliado
+                        </div>
+                        <div id="turnos" class="row center-align">
+                            <div id="m" class="col s4">Manhã</div>
+                            <div id="t" class="col s4">Tarde</div>
+                            <div id="n" class="col s4">Noite</div>
+                        </div>
+
+                    </div>
+
+                    <div class="card-action">
+                        <a href="#" id="btn_avaliar" class="blue-text">
+                            <i class="material-icons">keyboard_voice</i>
+                            <span>Não sei, quero avaliar</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m12">
+                    <div class="card grey lighten-3">
+                        <div class="card-content black-text">
+                            <span class="card-title">
+                                Conteúdo personalizado
+                            </span>
+                            <p>
+                                <strong>Dicas e exercícios personalizados, de acordo com o seu padrão de uso e qualidade
+                                    da voz.</strong>
+                            </p>
+                            <div>
+                                <ul>
+                                    <li class="templates" id="template_1">
+                                        <div class="divider"></div>
+                                        <ol>
+                                            <li>
+                                                Na posição deitado com um livro pesado sobre o abdômen: inspirar
+                                                profundamente e fazer o livro subir ao expirar o livro desce. <br>-
+                                                Repetir: 10 vezes.
+                                            </li>
+                                            <li>
+                                                Na posição sentado: Inspirar e elevar os braços. Ao expirar abaixar os
+                                                braços.
+                                                <br>- Repetir: 10 vezes.
+                                            </li>
+                                            <li>
+                                                Fricativo sonoro (som de z contínuo - abelhinha).<br>- Repetir: 8 vezes.
+                                                <br>- Descansar 8 vezes.
+                                            </li>
+                                            <li>
+                                                Repetir a sequência articulatória mexendo bem a boca: BA, DA, GA, BE,
+                                                DE, GUE, BI, DI, GUI, BO, DO, GO, BU, DU, GU.
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li class="templates" id="template_2">
+                                        <div class="divider"></div>
+                                        <strong>Exercícios de Desaquecimento Vocal:</strong>
+                                        <ol>
+                                            <li>
+                                                Lateralização da cabeça (virar a cabeça para o lado) com emissão de
+                                                vogais (falar continuamente uma vogal aaaaaa).<br>- Repetir: 8 vezes.
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li class="templates" id="template_3">
+                                        <div class="divider"></div>
+                                        <strong>Exercícios a serem realizados antes do uso profissional da voz:</strong>
+                                        <ol>
+                                            <li>
+                                                Na posição deitado com um livro pesado sobre o abdômen: inspirar
+                                                profundamente e fazer o livro subir (segurar o ar por 10 segundos), ao
+                                                expirar o livro desce.<br>- Repetir: 10 vezes.
+                                            </li>
+                                            <li>
+                                                Na posição sentado: Inspirar sentindo o ar encher todo o pulmão, segurar
+                                                15 segundos, ao expirar, soltar o ar aos poucos.<br>- Repetir: 10 vezes.
+                                                Som vibrante de língua (telefone contínuo).<br>- Repetir: 8 vezes.<br>-
+                                                Descansar 8 vezes.
+                                            </li>
+                                            <li>
+                                                Repetir a sequência articulatória mexendo bem a boca: BRA, DRA, GRA,
+                                                BRE, DRE, GRE, BRI, DRI, GRI, BRO, DRO, GRO, BRU, DRU, GRU.
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li class="templates" id="template_4">
+                                        <div class="divider"></div>
+                                        <ol>
+                                            <li>
+                                                Realizar a lateralização da cabeça (virar a cabeça para o lado)bem
+                                                devagar, inspirando cada vez que a cabeça for parar inspirando ao vir
+                                                para a frente.
+                                            </li>
+                                            <li>
+                                                Elevar os ombros durante a inspiração, sustentar por um tempo e soltar
+                                                na expiração.
+                                            </li>
+                                            <li>
+                                                Som do m contínuo (huming) deixar os lábios juntos e dentes
+                                                separados.<br>- Repetir: 8 vezes.<br>- Descansa: 8 vezes.
+                                            </li>
+                                            <li>
+                                                Repetir a sequência articulatória mexendo bem a boca: ma, me, mi, mo,
+                                                mu.
+                                            </li>
+                                            <strong>- Exercício a ser realizado após o uso da voz:</strong>
+                                            <li>
+                                                Lateralização da cabeça (virar a cabeça para o lado) com emissão de
+                                                vogais (falar continuamente uma vogal aaaaaa).
+                                            </li>
+                                            <li>
+                                                Bocejar
+                                            </li>
+                                        </ol>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <div class="left-align">
+                                <strong>Observação:</strong> Todas as técnicas foram sugeridas por um fonoaudiólogo e
+                                são técnicas universais, ou seja, não causarão nenhum problema vocal mesmo em indivíduos
+                                que apresentam lesão vocal. Estas técnicas consistem em exercícios respiratórios, de
+                                aquecimento e desaquecimento vocal e articulatórios, visando apenas a prevenção de
+                                alterações vocais.
+                                Este app não serve como diagnóstico e nem tratamento vocal, desconfiando de alguma
+                                alteração o médico ou o fonoaudiólogo deverão ser consultados.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m12">
+                    <div class="card-action">
+                        <a href="https://forms.gle/2dzFsyWd29T3Z6tdA" target="_blank">
+                            <i class="material-icons" style="top: 9px">message</i> Enviar feedback
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="tab2" class="col s12">
+
+            <div class="legenda_grafico">
+                <i class="material-icons">bar_chart</i> Qualidade média da voz por dia da semana:
+            </div>
+            <canvas id="chart_dia_semana" width="400" height="400"></canvas>
+
+            <div class="legenda_grafico">
+                <i class="material-icons">bar_chart</i> Qualidade média da voz por período do dia:
+            </div>
+            <canvas id="chart_periodo_dia" width="400" height="400"></canvas>
+
+            <div class="legenda_grafico">
+                <i class="material-icons">history</i> Histórico de avaliações do mês atual:
+            </div>
+            <div id="historico_avaliacoes_mes" class="row"></div>
+            <div class="row">
+                <div class="col s12 center-align"><strong>Qualidade da voz</strong></div>
+                <div id="gradienteHistoricoLegenda" class="col s12"></div>
+                <div class="left"><strong>Pior</strong></div>
+                <div class="right"><strong>Melhor</strong></div>
+            </div>
+        </div>
+
+        <div id="tab3" class="col s12 left-align">
+
+            <div id="dados_perfil_salvo" class="white-text center-align col s12"></div>
+
+            <p>Por gentileza, forneça algumas informações para completarmos seu perfil. Esta é uma versão de avaliação.
+                Todos os seus dados serão utilizados apenas para fins de desenvolvimento do aplicativo e somente a Good
+                Voice tem acesso a eles. Você está protegido pela Lei Geral de Proteção de Dados (LGPD) em vigência.
+                <strong>Todos os dados são salvos automaticamente!</strong>
+            </p>
+
+            <form action="#" class="left-align perfil-form">
+
+                <div class="divider"></div>
+
+                <div class="row valign-wrapper">
+                    <span class="col l3 s3">Idade:</span>
+                    <label class="col l9 s9">
+                        <input type="number" id="idade" value="0" min="0">
+                        <span>Anos</span>
+                    </label>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="row">
+                    <span class="col l3 s3">Sexo:</span>
+                    <label class="col l2 s4">
+                        <input class="with-gap" name="sexo" id="sexo_masculino" type="radio" value="masculino" />
+                        <span>Masculino</span>
+                    </label>
+                    <label class="col l2 s4">
+                        <input class="with-gap" name="sexo" id="sexo_feminino" type="radio" value="feminino" />
+                        <span>Feminino</span>
+                    </label>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="row">
+                    <span class="col l3 s3">Fumante:</span>
+                    <label class="col l2 s3">
+                        <input class="with-gap" name="fumante" type="radio" id="fumante_sim" value="sim" />
+                        <span>Sim</span>
+                    </label>
+                    <label class="col l2 s3">
+                        <input class="with-gap" name="fumante" type="radio" id="fumante_nao" value="nao" />
+                        <span>Não</span>
+                    </label>
+                    <label class="col l2 s3">
+                        <input class="with-gap" name="fumante" type="radio" id="fumante_ja_fui" value="ja_fui" />
+                        <span>Já fui</span>
+                    </label>
+                </div>
+
+                <div class="row grey-text valign-wrapper">
+                    <span class="col l3 s6 tempo_fumante">Por quanto tempo:</span>
+                    <label class="col l5 s4">
+                        <input type="number" id="tempo_anos" class="tempo_fumante" value="0" min="0" disabled>
+                        <span>Anos</span>
+                    </label>
+                    <label class="col l5 s4">
+                        <input type="number" id="tempo_meses" class="tempo_fumante" value="0" min="0" max="12" disabled>
+                        <span>Meses</span>
+                    </label>
+                </div>
+
+                <div class="row valign-wrapper">
+                    <span class="col l3 s6 grey-text tempo_parou">Há quanto tempo parou:</span>
+                    <label class="col l5 s4">
+                        <input type="number" id="parou_anos" class="tempo_parou" value="0" min="0" disabled>
+                        <span>Anos</span>
+                    </label>
+                    <label class="col l5 s4">
+                        <input type="number" id="parou_meses" class="tempo_parou" value="0" min="0" max="12" disabled>
+                        <span>Meses</span>
+                    </label>
+                </div>
+
+                <div class="divider"></div>
+            </form>
+
+            <p>Marque o número aproximado de horas consecutivas que você usa a voz profissionalmente ao longo da semana.
+            </p>
+
+            <table>
+                <colgroup>
+                    <col span="1" style="width: 24%;">
+                </colgroup>
+
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Manhã</th>
+                        <th>Tarde</th>
+                        <th>Noite</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <th>Domingo</th>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="dom_manha" class="horas_voz"></select>
+                            </div>
+                        </td>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="dom_tarde" class="horas_voz"></select>
+                            </div>
+                        </td>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="dom_noite" class="horas_voz"></select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Segunda</th>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="seg_manha" class="horas_voz"></select>
+                            </div>
+                        </td>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="seg_tarde" class="horas_voz"></select>
+                            </div>
+                        </td>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="seg_noite" class="horas_voz"></select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Terça</th>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="ter_manha" class="horas_voz"></select>
+                            </div>
+                        </td>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="ter_tarde" class="horas_voz"></select>
+                            </div>
+                        </td>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="ter_noite" class="horas_voz"></select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Quarta</th>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="qua_manha" class="horas_voz"></select>
+                            </div>
+                        </td>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="qua_tarde" class="horas_voz"></select>
+                            </div>
+                        </td>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="qua_noite" class="horas_voz"></select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Quinta</th>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="qui_manha" class="horas_voz"></select>
+                            </div>
+                        </td>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="qui_tarde" class="horas_voz"></select>
+                            </div>
+                        </td>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="qui_noite" class="horas_voz"></select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Sexta</th>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="sex_manha" class="horas_voz"></select>
+                            </div>
+                        </td>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="sex_tarde" class="horas_voz"></select>
+                            </div>
+                        </td>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="sex_noite" class="horas_voz"></select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Sábado</th>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="sab_manha" class="horas_voz"></select>
+                            </div>
+                        </td>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="sab_tarde" class="horas_voz"></select>
+                            </div>
+                        </td>
+                        <td class="row">
+                            <div class="input-field col l6 m8 s9">
+                                <select id="sab_noite" class="horas_voz"></select>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="center">
+                <button class="btn waves-effect waves-light" type="submit" name="action" id="salvar_dados_perfil">Salvar
+                    <i class="material-icons left">save</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <button class="add-button">Adicionar à tela inicial</button>
+    <div class="add-button-space"></div>
+
+    <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/Chart.min.js"></script>
+
+    <script src="js/firebase/firebase-app.js"></script>
+    <script src="js/firebase/firebase-analytics.js"></script>
+    <script src="js/firebase/firebase-database.js"></script>
+    <script src="js/firebase/firebase-auth.js"></script>
+    <script type="text/javascript" src="js/firebase.js?v=4"></script>
+
+    <script type="text/javascript" src="js/script.js?v=4"></script>
+    <script type="text/javascript" src="js/charts.js?v=4"></script>
+</body>
+
+</html>
